@@ -1,6 +1,5 @@
+import Cardinal_Algebra_Primitives
 import Testing
-
-import Algebra_Cardinal_Primitives
 
 @Suite("Cardinal.Monoid Tests")
 struct CardinalMonoidTests {

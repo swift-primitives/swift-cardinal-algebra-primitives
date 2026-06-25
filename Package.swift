@@ -1,9 +1,9 @@
-// swift-tools-version: 6.2
+// swift-tools-version: 6.3.1
 
 import PackageDescription
 
 let package = Package(
-    name: "swift-algebra-cardinal-primitives",
+    name: "swift-cardinal-algebra-primitives",
     platforms: [
         .macOS(.v26),
         .iOS(.v26),
@@ -13,38 +13,38 @@ let package = Package(
     ],
     products: [
         .library(
-            name: "Algebra Cardinal Primitives",
-            targets: ["Algebra Cardinal Primitives"]
+            name: "Cardinal Algebra Primitives",
+            targets: ["Cardinal Algebra Primitives"]
         ),
         .library(
-            name: "Algebra Cardinal Primitives Test Support",
-            targets: ["Algebra Cardinal Primitives Test Support"]
+            name: "Cardinal Algebra Primitives Test Support",
+            targets: ["Cardinal Algebra Primitives Test Support"]
         ),
     ],
     dependencies: [
-        .package(path: "../swift-algebra-semiring-primitives"),
-        .package(path: "../swift-cardinal-primitives"),
+        .package(url: "https://github.com/swift-primitives/swift-algebra-primitives.git", branch: "main"),
+        .package(url: "https://github.com/swift-primitives/swift-cardinal-primitives.git", branch: "main"),
     ],
     targets: [
         .target(
-            name: "Algebra Cardinal Primitives",
+            name: "Cardinal Algebra Primitives",
             dependencies: [
-                .product(name: "Algebra Semiring Primitives", package: "swift-algebra-semiring-primitives"),
+                .product(name: "Algebra Semiring Primitives", package: "swift-algebra-primitives"),
                 .product(name: "Cardinal Primitives", package: "swift-cardinal-primitives"),
             ]
         ),
         .target(
-            name: "Algebra Cardinal Primitives Test Support",
+            name: "Cardinal Algebra Primitives Test Support",
             dependencies: [
-                "Algebra Cardinal Primitives",
+                "Cardinal Algebra Primitives",
             ],
             path: "Tests/Support"
         ),
         .testTarget(
-            name: "Algebra Cardinal Primitives Tests",
+            name: "Cardinal Algebra Primitives Tests",
             dependencies: [
-                "Algebra Cardinal Primitives",
-                "Algebra Cardinal Primitives Test Support",
+                "Cardinal Algebra Primitives",
+                "Cardinal Algebra Primitives Test Support",
             ]
         ),
     ],
@@ -52,12 +52,20 @@ let package = Package(
 )
 
 for target in package.targets where ![.system, .binary, .plugin, .macro].contains(target.type) {
-    let settings: [SwiftSetting] = [
+    let ecosystem: [SwiftSetting] = [
+        .strictMemorySafety(),
         .enableUpcomingFeature("ExistentialAny"),
         .enableUpcomingFeature("InternalImportsByDefault"),
         .enableUpcomingFeature("MemberImportVisibility"),
+        .enableUpcomingFeature("NonisolatedNonsendingByDefault"),
+        .enableExperimentalFeature("LifetimeDependence"),
         .enableExperimentalFeature("Lifetimes"),
-        .strictMemorySafety()
+        .enableExperimentalFeature("SuppressedAssociatedTypes"),
+        .enableUpcomingFeature("InferIsolatedConformances"),
+        .enableUpcomingFeature("LifetimeDependence"),
     ]
-    target.swiftSettings = (target.swiftSettings ?? []) + settings
+
+    let package: [SwiftSetting] = []
+
+    target.swiftSettings = (target.swiftSettings ?? []) + ecosystem + package
 }

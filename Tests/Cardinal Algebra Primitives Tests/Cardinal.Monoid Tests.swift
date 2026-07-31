@@ -1,12 +1,15 @@
 import Cardinal_Algebra_Primitives
 import Testing
 
-@Suite("Cardinal.Monoid Tests")
-struct CardinalMonoidTests {
-    @Suite struct Unit {}
+extension Cardinal {
+    @Suite struct Monoid {
+        @Suite struct Unit {}
+        @Suite struct `Edge Case` {}
+        @Suite struct Integration {}
+    }
 }
 
-extension CardinalMonoidTests.Unit {
+extension Cardinal.Monoid.Unit {
     @Test
     func `identity is zero`() {
         let monoid = Cardinal.monoid
